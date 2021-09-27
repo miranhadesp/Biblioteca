@@ -7,6 +7,12 @@ namespace treino.Biblioteca{
 
         List<ILivro> livros = new List<ILivro>();
 
+        private string id;
+        public string Id{
+            get{ return id; }
+            set{ id = value; }
+        }
+
         private string nome; 
         public string Nome{
              get{ return nome; } 
@@ -35,8 +41,9 @@ namespace treino.Biblioteca{
 
         }
 
-        public Livros(string nome, string autor, int ano, double preco){
-
+        public Livros(string id, string nome, string autor, int ano, double preco){
+            
+            Id = id;
             Nome = nome;
             Autor = autor;
             Ano = ano;
@@ -82,17 +89,27 @@ namespace treino.Biblioteca{
 
         public void CadastrarNovoLivro(){
 
-            livros.Add(new Livros (Nome, Autor, Ano, Preco));
+            Random random = new Random();
+
+            int[] rnd = new int[3];
+
+            for(int i = 0; i < 3; i++){
+                rnd[i] = random.Next(0, 9);
+            }
+
+            Id = Convert.ToString(String.Concat(rnd));
+
+            livros.Add(new Livros (Id, Nome, Autor, Ano, Preco));
         }
 
         public void RemoverLivro(){
 
-            string nomeLivro;
+            string codLivro;
 
-            Console.Write("\nDigite o nome do livro que deseja remover: "); //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-            nomeLivro = Console.ReadLine();
+            Console.Write("\nDigite o código do livro que deseja remover: "); 
+            codLivro = Console.ReadLine();
 
-            int indexLivro = livros.FindIndex(livro => livro.Nome == nomeLivro);
+            int indexLivro = livros.FindIndex(livro => livro.Id == codLivro);
 
             if(indexLivro == -1){
                 Console.WriteLine("Livro não encontrada, tente novamente");
@@ -100,87 +117,110 @@ namespace treino.Biblioteca{
             }
             else{
                 livros.RemoveAt(indexLivro);
-                Console.WriteLine($"\nO livro {nomeLivro} foi removido com sucesso!");
+                Console.WriteLine($"\nO livro {codLivro} foi removido com sucesso!");
                 MostrarLivros();
             }
         }
 
         public void AjustarCadastro(){
 
-            string nomeLivro;
+            Console.Write("\nDigite o código do livro que deseja alterar o cadastro: "); 
+            string codLivro = Console.ReadLine();
 
-            Console.Write("\nDigite o nome do livro que deseja alterar o cadastro: "); //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-            nomeLivro = Console.ReadLine();
+            foreach (ILivro k in livros){
+                if(codLivro == k.Id){
+                    Console.WriteLine("\nO que deseja atualizar? ");
+                    Console.WriteLine("1 - Nome");
+                    Console.WriteLine("2 - Autor");
+                    Console.WriteLine("3 - Ano");
+                    Console.WriteLine("4 - Preço");
 
-            Console.WriteLine("\nO que deseja atualizar? ");
-            Console.WriteLine("1 - Nome");
-            Console.WriteLine("2 - Autor");
-            Console.WriteLine("3 - Ano");
-            Console.WriteLine("4 - Preço");
+                    int opcao = Convert.ToInt32(Console.ReadLine());
 
-            int opcao = Convert.ToInt32(Console.ReadLine());
+                    switch (opcao){
+                        case 1: 
+                            foreach (ILivro e in livros){
+                                if(codLivro == e.Id){ 
+                                    Console.Write($"O nome {e.Nome} será ajustado para: ");
+                                    e.Nome = Console.ReadLine();
 
-            switch (opcao){
-                case 1: 
-                    foreach (ILivro e in livros){
-                        if(nomeLivro == e.Nome){ //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-                            Console.Write($"O nome {e.Nome} será ajustado para: ");
-                            e.Nome = Console.ReadLine();
+                                    Console.WriteLine("\nAtualizado com sucesso!");
+                                }
+                            }   
+                            break;
+                        
+                        case 2:
+                            foreach (ILivro e in livros){
+                                if(codLivro == e.Id){ 
+                                    Console.Write($"O autor {e.Autor} será ajustado para: ");
+                                    e.Autor = Console.ReadLine();
 
-                            Console.WriteLine("\nAtualizado com sucesso!");
-                        }
-                    }   
-                    break;
-                
-                case 2:
-                    foreach (ILivro e in livros){
-                        if(nomeLivro == e.Nome){ //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-                            Console.Write($"O autor {e.Autor} será ajustado para: ");
-                            e.Autor = Console.ReadLine();
+                                    Console.WriteLine("\nAtualizado com sucesso!");
+                                }
+                            }   
+                            break;
 
-                            Console.WriteLine("\nAtualizado com sucesso!");
-                        }
-                    }   
-                    break;
+                        case 3:
+                            foreach (ILivro e in livros){
+                                if(codLivro == e.Id){ 
+                                    Console.Write($"O ano {e.Ano} será ajustado para: ");
+                                    e.Ano = Convert.ToInt32(Console.ReadLine());
 
-                case 3:
-                    foreach (ILivro e in livros){
-                        if(nomeLivro == e.Nome){ //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-                            Console.Write($"O ano {e.Ano} será ajustado para: ");
-                            e.Ano = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("\nAtualizado com sucesso!");
+                                }
+                            }   
+                            break;
 
-                            Console.WriteLine("\nAtualizado com sucesso!");
-                        }
-                    }   
-                    break;
+                        case 4:
+                            foreach (ILivro e in livros){
+                                if(codLivro == e.Id){ 
+                                    Console.Write($"O preço {e.Preco}R$ será ajustado para: ");
+                                    e.Preco = Convert.ToDouble(Console.ReadLine());
 
-                case 4:
-                    foreach (ILivro e in livros){
-                        if(nomeLivro == e.Nome){ //VERIFICAÇÃO FEITA PELO NOME, ALTERAR PARA ID
-                            Console.Write($"O preço {e.Preco}R$ será ajustado para: ");
-                            e.Preco = Convert.ToDouble(Console.ReadLine());
+                                    Console.WriteLine("\nAtualizado com sucesso!");
+                                }
+                            }   
+                            break;
 
-                            Console.WriteLine("\nAtualizado com sucesso!");
-                        }
-                    }   
-                    break;
-
-                default:
-                    Console.WriteLine("Opcao inválida, tente novamente");
+                        default:
+                            Console.WriteLine("Opcao inválida, tente novamente");
+                            AjustarCadastro();
+                            break;
+                    }
+                }
+                else{
+                    Console.WriteLine("\nLivro não encontrado, tente novamente.");
                     AjustarCadastro();
-                    break;
+                }
             }
 
             Console.Write("Deseja atualizar outro livro? (S/N) ");
             string simOuNao1 = Console.ReadLine().ToUpper();
 
             if(simOuNao1 == "S") AjustarCadastro();
+
+            else MostrarLivros();
+        }
+
+        public void MostrarId(){
+
+            Console.Write("\nDigite o nome do livro que procura: ");
+            string nomeLivro = Console.ReadLine();
+
+            foreach (ILivro e in livros){
+                if(nomeLivro == e.Nome){ 
+                    Console.Write($"O código de {e.Nome} é: {e.Id}");
+
+                    ControleBiblioteca.Comeco();
+                }
+            }
         }
 
         public void MostrarLivros(){
 
             foreach (ILivro e in livros){
-                Console.WriteLine($"\nNome: {e.Nome}");
+                Console.WriteLine($"\nCódigo do produto (id): {e.Id}");
+                Console.WriteLine($"Nome: {e.Nome}");
                 Console.WriteLine($"Autor: {e.Autor}");
                 Console.WriteLine($"Ano de lançamento: {e.Ano}");
                 Console.WriteLine($"Preço: {e.Preco}R$");

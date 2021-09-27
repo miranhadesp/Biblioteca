@@ -5,6 +5,8 @@ namespace treino.Biblioteca{
 
     public interface ILivro{
 
+        string Id { get; set; }
+
         string Nome { get; set; }
         string Autor { get; set; }
 

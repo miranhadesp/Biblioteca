@@ -21,7 +21,11 @@ namespace treino.Biblioteca{
                     livros.AjustarCadastro();
                     break;
 
-                case 4:
+                case 54:
+                    livros.MostrarId();
+                    break;
+
+                case 5:
                     livros.MostrarLivros();
                     break;
 
